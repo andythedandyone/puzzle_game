@@ -2,10 +2,10 @@ var thing;
 var emptyArray = [];
 var array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 14, 15, 16];
 var grid = ['01', '02', '03', '04',
-    '11', '12', '13', '14',
-    '21', '22', '23', '24',
-    '31', '32', '33', '34'
-];
+            '11', '12', '13', '14',
+            '21', '22', '23', '24',
+            '31', '32', '33', '34'
+            ];
 
 
 function setup() {
@@ -15,35 +15,51 @@ function setup() {
     document.addEventListener('drop', dragDrop, false);
 }
 
+function cellPicker() {
+    var temp;
+    temp = grid[Math.floor(Math.random() * grid.length)];
+    var cell = document.getElementById(temp);
+    cell.innerHTML = '';
+}
+
+
 function dragStart(e) {
     e.dataTransfer.setData('Text', e.target.id);
 }
+
 
 function dragOver(e) {
     e.preventDefault();
 }
 
+
 function dragDrop(e) {
     var dropit = e.dataTransfer.getData('Text');
 
-    if (e.target.className === 'cell' && e.target.childElementCount === 0 ) {
-
+    if (e.target.className === 'cell') {
         var check = enforceMove(e.target.id, dropit);
         if (check === true) {
             e.target.appendChild(document.getElementById(dropit));
         }
-
     }
 }
+
 
 function enforceMove(current, previous) {
 
     var currentCell = parseInt(document.getElementById(current).id);
     var previousCell = parseInt(document.getElementById(previous).parentNode.id);
-    // var leftCell;
-    // var rightCell;
-    // var lowerCell;
-    // var topCell;
+
+    // TODO: Implement moving collumn
+    // //move collumn right
+    // if (previousCell + 3 == currentCell) {
+    //     console.log('leval move collumn right');
+    //
+    // }
+    // //move collumn left
+    // if (previousCell - 3 == currentCell) {
+    //     console.log('legal move collumn left')
+    // }
 
     //moving right
     if (previousCell + 1 == currentCell) {
@@ -61,7 +77,6 @@ function enforceMove(current, previous) {
     if (previousCell - 10 == currentCell) {
         return true;
     }
-
 }
 
 
@@ -87,7 +102,6 @@ function plotGrid(shuffledArr) {
     while (x < grid.length) {
 
         var col = document.getElementById(grid[x]);
-
         var cell = document.createElement('div');
         var span = document.createElement('span');
         var p = document.createElement('p');
@@ -105,14 +119,5 @@ function plotGrid(shuffledArr) {
     }
     cellPicker();
 }
-
-function cellPicker() {
-    var temp;
-    temp = grid[Math.floor(Math.random() * grid.length)];
-    var cell = document.getElementById(temp);
-    cell.innerHTML = '';
-}
-
-
 
 document.onload = setup();
