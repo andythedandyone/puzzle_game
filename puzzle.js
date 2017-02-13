@@ -1,4 +1,10 @@
-var thing;
+/*
+Puzzle Board Game
+Code by Andy on 02/13/17
+Feel free to modify and use as you see fit
+*/
+
+
 var emptyArray = [];
 var array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 14, 15, 16];
 var grid = ['01', '02', '03', '04',
