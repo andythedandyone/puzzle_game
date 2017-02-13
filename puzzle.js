@@ -1,66 +1,117 @@
-
-
+var thing;
+var emptyArray = [];
+var array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 14, 15, 16];
+var grid = ['01', '02', '03', '04',
+    '11', '12', '13', '14',
+    '21', '22', '23', '24',
+    '31', '32', '33', '34'
+];
 
 
 function setup() {
-    drawTable();
+    shuffle();
     document.addEventListener('dragstart', dragStart, false);
     document.addEventListener('dragover', dragOver, false);
     document.addEventListener('drop', dragDrop, false);
 }
 
 function dragStart(e) {
-    //console.log(e.target.id);
     e.dataTransfer.setData('Text', e.target.id);
 }
 
 function dragOver(e) {
     e.preventDefault();
-    console.log('over')
-    console.log(e.target.id);
-    e.stopImmediatePropagation();
 }
 
 function dragDrop(e) {
-
     var dropit = e.dataTransfer.getData('Text');
-    var checkIdOver = document.getElementById(dropit).parentNode.id;
-    var currentId = e.target.id;
 
+    if (e.target.className === 'cell' && e.target.childElementCount === 0 ) {
 
-   if (e.target.className === 'cell' && e.target.childElementCount === 0) {
-
-       e.target.appendChild(document.getElementById(dropit));
-   }
-}
-
-
-var tRow = 4;
-var tCell = 4;
-var array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 14, 15, 16];
-var arrayRow = [[00, 01, 02, 03],
-                [10, 12, 13, 14],
-                [20, 21, 23, 24],
-                [30, 31, 33, 34]];
-
-function drawTable() {
-    var tbody = document.getElementById('tbody');
-    var table = document.createElement("table")
-
-    for (var x = 0; x < arrayRow.length; x++) {
-        var tr = document.createElement("tr");
-        tr.setAttribute('id', arrayRow[x]);
-        for (var y = 0; y < tCell; y++) {
-            var td = document.createElement("td");
-            td.setAttribute("id", x + y);
-            td.setAttribute("class", "cell");
-            tr.appendChild(td);
+        var check = enforceMove(e.target.id, dropit);
+        if (check === true) {
+            e.target.appendChild(document.getElementById(dropit));
         }
-        tbody.appendChild(tr);
+
     }
-    //container.appendChild(table);
 }
 
+function enforceMove(current, previous) {
+
+    var currentCell = parseInt(document.getElementById(current).id);
+    var previousCell = parseInt(document.getElementById(previous).parentNode.id);
+    // var leftCell;
+    // var rightCell;
+    // var lowerCell;
+    // var topCell;
+
+    //moving right
+    if (previousCell + 1 == currentCell) {
+        return true;
+    }
+    //moving down
+    if (previousCell + 10 == currentCell) {
+        return true;
+    }
+    //moving left
+    if (previousCell - 1 == currentCell) {
+        return true;
+    }
+    //moving top
+    if (previousCell - 10 == currentCell) {
+        return true;
+    }
+
+}
+
+
+function shuffle() {
+    var x = 0;
+    var temp;
+
+    while (x !== 16) {
+        temp = Math.floor(Math.random() * (17 - 1) + 1);
+        if (emptyArray.includes(temp) == false) {
+            emptyArray.push(temp);
+        }
+        x = emptyArray.length;
+    }
+    plotGrid(emptyArray);
+}
+
+
+function plotGrid(shuffledArr) {
+
+    var x = 0;
+
+    while (x < grid.length) {
+
+        var col = document.getElementById(grid[x]);
+
+        var cell = document.createElement('div');
+        var span = document.createElement('span');
+        var p = document.createElement('p');
+
+        cell.setAttribute('class', 'incell');
+        cell.setAttribute('id', x + '_' + x);
+        cell.setAttribute('draggable', true);
+
+        p.appendChild(document.createTextNode(shuffledArr[x]));
+
+        span.appendChild(p);
+        cell.appendChild(span);
+        col.appendChild(cell);
+        x++;
+    }
+    cellPicker();
+}
+
+function cellPicker() {
+    var temp;
+    temp = grid[Math.floor(Math.random() * grid.length)];
+    var cell = document.getElementById(temp);
+    cell.innerHTML = '';
+}
 
 
 
