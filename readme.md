@@ -3,7 +3,7 @@ Puzzle Board Game
 Code by Andy on 02/13/17
 
 You can play the game at:
-https://andythedandyone.github.io/puzzle_game/
+https://codercodingthecode.github.io/puzzle_game/
 
 
 How to Play:
